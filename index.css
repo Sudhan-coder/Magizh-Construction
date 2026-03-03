@@ -1,0 +1,19 @@
+.flex-shrink-0{
+    size-adjust: calc();
+}
+h-10 w-auto{
+    position: fixed;
+}
+.photo{
+    border: 3px solid black;
+    border-radius: 18px;
+    height: 300px;
+    width: 300px;
+}
+.photo:hover .star {
+    display: block;
+    filter: drop-shadow(0 0 10px #de3c01);
+}
+
+
+
