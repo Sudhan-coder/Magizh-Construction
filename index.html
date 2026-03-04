@@ -153,35 +153,47 @@
    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Recent Projects</h2>
-     <p class="text-xl text-gray-600 max-w-2xl mx-auto">Take a look at some of our completed projects that showcase our quality and craftsmanship</p>
-    </div><!-- Upload Project Section -->
-    <div class="mb-12 bg-white rounded-lg shadow-lg p-8">
-     <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">📁 Upload New Project</h3>
-     <div class="max-w-2xl mx-auto">
-      <form id="project-upload-form" class="space-y-6">
-       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div><label for="projectName" class="block text-sm font-medium text-gray-700 mb-2">Project Name</label> <input type="text" id="projectName" name="projectName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter project name" required>
-        </div>
-        <div><label for="projectCategory" class="block text-sm font-medium text-gray-700 mb-2">Category</label> <select id="projectCategory" name="projectCategory" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required> <option value="">Select category</option> <option value="residential">Residential</option> <option value="commercial">Commercial</option> <option value="renovation">Renovation</option> <option value="industrial">Industrial</option> </select>
-        </div>
+     <p class="text-xl text-gray-600 max-w-2xl mx-auto">Take a look at some of our completed projects that showcase our quality and craftsmanship</p><button onclick="openAdminPasswordPrompt()" id="admin-toggle" class="mt-6 inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">🔐 Open Admin Panel - Upload Projects</button>
+    </div><!-- Admin Password Modal (Hidden by default) -->
+    <div id="password-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+     <div class="bg-white rounded-lg max-w-md w-full p-8 shadow-xl">
+      <div class="text-center mb-6">
+       <div class="text-4xl mb-2">
+        🔐
        </div>
-       <div><label for="projectDescription" class="block text-sm font-medium text-gray-700 mb-2">Project Description</label> <textarea id="projectDescription" name="projectDescription" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe the project..." required></textarea>
+       <h2 class="text-2xl font-bold text-gray-900">Admin Access</h2>
+       <p class="text-gray-600 text-sm mt-2">Enter password to access the admin panel</p>
+      </div>
+      <div class="space-y-4">
+       <div>
+        <input type="password" id="admin-password" placeholder="Enter admin password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" onkeypress="handlePasswordKeypress(event)">
        </div>
-       <div><label for="projectImages" class="block text-sm font-medium text-gray-700 mb-2">Project Images</label>
-        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors"><input type="file" id="projectImages" name="projectImages" multiple accept="image/*" class="hidden">
-         <div id="upload-area" class="cursor-pointer" onclick="document.getElementById('projectImages').click()">
-          <div class="text-4xl mb-2">
-           📷
-          </div>
-          <p class="text-gray-600 mb-2">Click to upload project images</p>
-          <p class="text-sm text-gray-500">PNG, JPG, GIF up to 10MB each</p>
-         </div>
-         <div id="image-preview" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 hidden"></div>
-        </div>
-       </div><button type="submit" class="w-full btn-primary text-white py-3 rounded-lg font-semibold text-lg"> 📤 Upload Project </button>
-      </form>
+       <div class="flex gap-3">
+        <button onclick="closePasswordModal()" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-semibold">Cancel</button> <button onclick="verifyAdminPassword()" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">Verify</button>
+       </div>
+      </div>
+      <div id="password-error" class="hidden mt-4 bg-red-100 border border-red-400 text-red-700 px-3 py-2 rounded text-sm"></div>
      </div>
-    </div><!-- Projects Grid -->
+    </div><!-- Admin Upload Panel (Hidden by default) -->
+    <div id="admin-panel" class="hidden bg-white rounded-lg shadow-lg p-8 mb-8 border-2 border-blue-600">
+     <h3 class="text-2xl font-bold text-gray-900 mb-6">📸 Upload New Project</h3>
+     <form id="upload-project-form" class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+       <div><label for="projectName" class="block text-sm font-medium text-gray-700 mb-2">Project Name</label> <input type="text" id="projectName" name="projectName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Enter project name" required>
+       </div>
+       <div><label for="projectCategory" class="block text-sm font-medium text-gray-700 mb-2">Category</label> <select id="projectCategory" name="projectCategory" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required> <option value="">Select category</option> <option value="residential">Residential</option> <option value="commercial">Commercial</option> <option value="renovation">Renovation</option> <option value="industrial">Industrial</option> </select>
+       </div>
+      </div>
+      <div><label for="projectDescription" class="block text-sm font-medium text-gray-700 mb-2">Description</label> <textarea id="projectDescription" name="projectDescription" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Describe your project..." required></textarea>
+      </div>
+      <div><label for="projectImages" class="block text-sm font-medium text-gray-700 mb-2">Upload Images</label> <input type="file" id="projectImages" name="projectImages" multiple accept="image/*" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+       <p class="text-xs text-gray-500 mt-2">You can upload multiple images. Supported formats: JPG, PNG, GIF</p>
+      </div>
+      <div id="image-preview" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
+      <div class="flex justify-end gap-4"><button type="button" onclick="toggleAdminPanel()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button> <button type="submit" id="upload-submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">Upload Project</button>
+      </div>
+     </form>
+    </div>
     <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><!-- Uploaded projects will appear here -->
     </div>
    </div>
@@ -604,100 +616,171 @@
         });
 
         // Project upload functionality
-        let uploadedImages = [];
+          let projects = []; // Store all projects with unique IDs
+        const ADMIN_PASSWORD = 'yogesh'; // Admin password
 
-        // Handle image selection and preview
-        document.getElementById('projectImages').addEventListener('change', function(e) {
-            const files = Array.from(e.target.files);
-            const previewContainer = document.getElementById('image-preview');
-            const uploadArea = document.getElementById('upload-area');
-            
-            if (files.length > 0) {
-                previewContainer.classList.remove('hidden');
-                previewContainer.innerHTML = '';
-                uploadedImages = [];
-                
-                files.forEach((file, index) => {
-                    if (file.type.startsWith('image/') && file.size <= 10 * 1024 * 1024) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            uploadedImages.push({
-                                name: file.name,
-                                data: e.target.result,
-                                size: file.size
-                            });
-                            
-                            const imageDiv = document.createElement('div');
-                            imageDiv.className = 'relative group';
-                            imageDiv.innerHTML = `
-                                <img src="${e.target.result}" alt="Preview" class="w-full h-20 object-cover rounded-lg">
-                                <button type="button" onclick="removeImage(${index})" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs opacity-0 group-hover:opacity-100 transition-opacity">×</button>
-                                <p class="text-xs text-gray-500 mt-1 truncate">${file.name}</p>
-                            `;
-                            previewContainer.appendChild(imageDiv);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-                
-                uploadArea.innerHTML = `
-                    <div class="text-2xl mb-2">✅</div>
-                    <p class="text-green-600 mb-2">${files.length} image(s) selected</p>
-                    <p class="text-sm text-gray-500">Click to change images</p>
-                `;
+        // Sample projects data (Admin can add these manually in code)
+        const sampleProjects = [
+            {
+                id: 'project-1',
+                name: 'Modern Office Complex',
+                category: 'commercial',
+                description: 'A state-of-the-art office building featuring sustainable design and smart building technology.',
+                images: [{
+                    name: 'office-main.jpg',
+                    data: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"%3E%3Crect fill="%2360a5fa" width="400" height="300"/%3E%3Crect fill="%233b82f6" x="20" y="40" width="360" height="220" rx="10"/%3E%3C/svg%3E'
+                }],
+                createdDate: new Date().toLocaleDateString()
             }
-        });
+        ];
 
-        // Remove image function
-        function removeImage(index) {
-            uploadedImages.splice(index, 1);
-            const previewContainer = document.getElementById('image-preview');
-            const uploadArea = document.getElementById('upload-area');
-            
-            if (uploadedImages.length === 0) {
-                previewContainer.classList.add('hidden');
-                uploadArea.innerHTML = `
-                    <div class="text-4xl mb-2">📷</div>
-                    <p class="text-gray-600 mb-2">Click to upload project images</p>
-                    <p class="text-sm text-gray-500">PNG, JPG, GIF up to 10MB each</p>
-                `;
-                document.getElementById('projectImages').value = '';
-            } else {
-                // Refresh preview
-                previewContainer.innerHTML = '';
-                uploadedImages.forEach((img, idx) => {
-                    const imageDiv = document.createElement('div');
-                    imageDiv.className = 'relative group';
-                    imageDiv.innerHTML = `
-                        <img src="${img.data}" alt="Preview" class="w-full h-20 object-cover rounded-lg">
-                        <button type="button" onclick="removeImage(${idx})" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs opacity-0 group-hover:opacity-100 transition-opacity">×</button>
-                        <p class="text-xs text-gray-500 mt-1 truncate">${img.name}</p>
-                    `;
-                    previewContainer.appendChild(imageDiv);
-                });
+        // Initialize with sample projects
+        projects = [...sampleProjects];
+        projects.forEach(project => renderProject(project));
+
+        // Open password prompt
+        function openAdminPasswordPrompt() {
+            const passwordModal = document.getElementById('password-modal');
+            const errorDiv = document.getElementById('password-error');
+            errorDiv.classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+            passwordModal.classList.remove('hidden');
+            document.getElementById('admin-password').focus();
+        }
+
+        // Close password modal
+        function closePasswordModal() {
+            const passwordModal = document.getElementById('password-modal');
+            const errorDiv = document.getElementById('password-error');
+            errorDiv.classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+            passwordModal.classList.add('hidden');
+        }
+
+        // Handle password keypress (Enter to verify)
+        function handlePasswordKeypress(event) {
+            if (event.key === 'Enter') {
+                verifyAdminPassword();
             }
         }
 
-        // Handle project upload form submission
-        document.getElementById('project-upload-form').addEventListener('submit', function(e) {
+        // Verify admin password
+        function verifyAdminPassword() {
+            const passwordInput = document.getElementById('admin-password');
+            const errorDiv = document.getElementById('password-error');
+            
+            if (passwordInput.value === ADMIN_PASSWORD) {
+                closePasswordModal();
+                toggleAdminPanel();
+            } else {
+                errorDiv.textContent = '❌ Incorrect password. Please try again.';
+                errorDiv.classList.remove('hidden');
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // Toggle admin panel
+        function toggleAdminPanel() {
+            const adminPanel = document.getElementById('admin-panel');
+            adminPanel.classList.toggle('hidden');
+            if (!adminPanel.classList.contains('hidden')) {
+                adminPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // Handle image preview
+        document.getElementById('projectImages').addEventListener('change', function(e) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
+            const files = Array.from(e.target.files);
+            
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'relative rounded-lg overflow-hidden';
+                    previewDiv.innerHTML = `
+                        <img src="${event.target.result}" alt="Preview ${index + 1}" class="w-full h-40 object-cover">
+                        <div class="absolute top-1 right-1 bg-blue-600 text-white text-xs px-2 py-1 rounded">Image ${index + 1}</div>
+                    `;
+                    preview.appendChild(previewDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Handle project upload
+        document.getElementById('upload-project-form').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            const uploadBtn = document.getElementById('upload-submit');
+            const originalText = uploadBtn.innerHTML;
+            uploadBtn.innerHTML = '⏳ Uploading...';
+            uploadBtn.disabled = true;
             
             const projectName = document.getElementById('projectName').value;
             const projectCategory = document.getElementById('projectCategory').value;
             const projectDescription = document.getElementById('projectDescription').value;
+            const imageFiles = document.getElementById('projectImages').files;
             
-            if (uploadedImages.length === 0) {
-                showProjectMessage('Please select at least one image for the project.', 'error');
+            if (imageFiles.length === 0) {
+                showProjectMessage('❌ Please select at least one image', 'error');
+                uploadBtn.innerHTML = originalText;
+                uploadBtn.disabled = false;
                 return;
             }
             
-            // Create new project card
+            // Convert images to base64
+            let imageCount = 0;
+            const images = [];
+            
+            Array.from(imageFiles).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    images.push({
+                        name: file.name,
+                        data: event.target.result
+                    });
+                    imageCount++;
+                    
+                    // When all images are loaded, create the project
+                    if (imageCount === imageFiles.length) {
+                        const newProject = {
+                            id: 'project-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+                            name: projectName,
+                            category: projectCategory,
+                            description: projectDescription,
+                            images: images,
+                            createdDate: new Date().toLocaleDateString()
+                        };
+                        
+                        projects.unshift(newProject);
+                        renderProject(newProject);
+                        
+                        // Reset form
+                        document.getElementById('upload-project-form').reset();
+                        document.getElementById('image-preview').innerHTML = '';
+                        toggleAdminPanel();
+                        
+                        showProjectMessage('✅ Project uploaded successfully! All visitors can now see it.', 'success');
+                        
+                        uploadBtn.innerHTML = originalText;
+                        uploadBtn.disabled = false;
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Render a single project card
+        function renderProject(project) {
             const projectsGrid = document.getElementById('projects-grid');
             const newProject = document.createElement('div');
-            newProject.className = 'bg-gray-100 rounded-lg overflow-hidden shadow-lg';
+            newProject.id = project.id;
+            newProject.className = 'bg-gray-100 rounded-lg overflow-hidden shadow-lg relative group';
             
-            // Use first uploaded image as main image
-            const mainImage = uploadedImages[0];
+            const mainImage = project.images[0];
             const categoryColors = {
                 residential: 'from-blue-400 to-blue-600',
                 commercial: 'from-green-400 to-green-600',
@@ -714,46 +797,155 @@
             
             newProject.innerHTML = `
                 <div class="h-48 relative overflow-hidden">
-                    <img src="${mainImage.data}" alt="${projectName}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-br ${categoryColors[projectCategory]} opacity-80 flex items-center justify-center">
+                    <img src="${mainImage.data}" alt="${project.name}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-br ${categoryColors[project.category]} opacity-80 flex items-center justify-center">
                         <div class="text-white text-center">
-                            <div class="text-4xl mb-2">${categoryEmojis[projectCategory]}</div>
-                            <p class="font-semibold">${projectCategory.charAt(0).toUpperCase() + projectCategory.slice(1)} Project</p>
+                            <div class="text-4xl mb-2">${categoryEmojis[project.category]}</div>
+                            <p class="font-semibold">${project.category.charAt(0).toUpperCase() + project.category.slice(1)} Project</p>
                         </div>
                     </div>
                     <div class="absolute top-2 right-2 bg-white/90 rounded-full px-2 py-1 text-xs font-semibold text-gray-700">
-                        ${uploadedImages.length} photo${uploadedImages.length > 1 ? 's' : ''}
+                        ${project.images.length} photo${project.images.length > 1 ? 's' : ''}
                     </div>
                 </div>
                 <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">${projectName}</h3>
-                    <p class="text-gray-600">${projectDescription}</p>
+                    <h3 class="text-xl font-bold mb-2">${project.name}</h3>
+                    <p class="text-gray-600">${project.description}</p>
                     <div class="mt-4 flex justify-between items-center">
-                        <span class="text-sm text-blue-600 font-semibold">${new Date().toLocaleDateString()}</span>
-                        <button onclick="viewProjectDetails('${projectName}', '${projectCategory}', '${projectDescription}', ${JSON.stringify(uploadedImages).replace(/"/g, '&quot;')})" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">View Details →</button>
+                        <span class="text-sm text-blue-600 font-semibold">${project.createdDate}</span>
+                        <button onclick="viewProjectDetails('${project.id}')" class="text-blue-600 hover:text-blue-800 text-sm font-semibold">View Details →</button>
+                    </div>
+                </div>
+                <div class="absolute top-2 left-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onclick="editProject('${project.id}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-semibold flex items-center gap-1">✏️ Edit</button>
+                    <button onclick="deleteProject('${project.id}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-semibold flex items-center gap-1">🗑️ Delete</button>
+                </div>
+            `;
+            
+            projectsGrid.insertBefore(newProject, projectsGrid.firstChild);
+        }
+
+        // Delete project function
+        function deleteProject(projectId) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            
+            const modalContent = document.createElement('div');
+            modalContent.className = 'bg-white rounded-lg max-w-md w-full p-8 shadow-xl';
+            modalContent.innerHTML = `
+                <div class="text-center mb-6">
+                    <div class="text-4xl mb-2">⚠️</div>
+                    <h2 class="text-2xl font-bold text-gray-900">Delete Project?</h2>
+                    <p class="text-gray-600 text-sm mt-2">This action cannot be undone.</p>
+                </div>
+                <div class="flex gap-3">
+                    <button class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-semibold" data-action="cancel">Keep It</button>
+                    <button class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold" data-action="confirm">Delete</button>
+                </div>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            // Handle button clicks
+            modalContent.querySelector('[data-action="cancel"]').addEventListener('click', () => {
+                modal.remove();
+            });
+            
+            modalContent.querySelector('[data-action="confirm"]').addEventListener('click', () => {
+                confirmDelete(projectId);
+                modal.remove();
+            });
+            
+            // Close on backdrop click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        // Confirm delete function
+        function confirmDelete(projectId) {
+            const projectElement = document.getElementById(projectId);
+            if (projectElement) {
+                projectElement.remove();
+            }
+            projects = projects.filter(p => p.id !== projectId);
+            showProjectMessage('✅ Project deleted successfully!', 'success');
+        }
+
+        // Edit project function
+        function editProject(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            
+            modal.innerHTML = `
+                <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Edit Project</h2>
+                            <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+                        </div>
+                        
+                        <form id="edit-project-form" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Project Name</label>
+                                    <input type="text" id="edit-projectName" value="${project.name}" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                                    <select id="edit-projectCategory" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                        <option value="residential" ${project.category === 'residential' ? 'selected' : ''}>Residential</option>
+                                        <option value="commercial" ${project.category === 'commercial' ? 'selected' : ''}>Commercial</option>
+                                        <option value="renovation" ${project.category === 'renovation' ? 'selected' : ''}>Renovation</option>
+                                        <option value="industrial" ${project.category === 'industrial' ? 'selected' : ''}>Industrial</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Project Description</label>
+                                <textarea id="edit-projectDescription" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>${project.description}</textarea>
+                            </div>
+                            
+                            <div class="flex justify-end gap-4">
+                                <button type="button" onclick="this.closest('.fixed').remove()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
+                                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold">Save Changes</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             `;
             
-            // Add to beginning of projects grid (after upload form)
-            projectsGrid.insertBefore(newProject, projectsGrid.firstChild);
+            document.body.appendChild(modal);
             
-            // Show success message
-            showProjectMessage('✅ Project uploaded successfully! Your new project is now visible in the gallery.', 'success');
-            
-            // Reset form
-            document.getElementById('project-upload-form').reset();
-            document.getElementById('image-preview').classList.add('hidden');
-            document.getElementById('upload-area').innerHTML = `
-                <div class="text-4xl mb-2">📷</div>
-                <p class="text-gray-600 mb-2">Click to upload project images</p>
-                <p class="text-sm text-gray-500">PNG, JPG, GIF up to 10MB each</p>
-            `;
-            uploadedImages = [];
-        });
-
+            document.getElementById('edit-project-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Update project data
+                project.name = document.getElementById('edit-projectName').value;
+                project.category = document.getElementById('edit-projectCategory').value;
+                project.description = document.getElementById('edit-projectDescription').value;
+                
+                // Update DOM
+                const projectElement = document.getElementById(projectId);
+                projectElement.remove();
+                renderProject(project);
+                
+                modal.remove();
+                showProjectMessage('✅ Project updated successfully!', 'success');
+            });
+        }
+        
         // View project details function
-        function viewProjectDetails(name, category, description, images) {
+        function viewProjectDetails(projectId) {
+            const project = projects.find(p => p.id === projectId);
+            if (!project) return;
+            
             const modal = document.createElement('div');
             modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
             modal.onclick = function(e) {
@@ -762,31 +954,35 @@
                 }
             };
             
-            const imageGallery = images.map((img, index) => 
-                `<img src="${img.data}" alt="${name} ${index + 1}" class="w-full h-64 object-cover rounded-lg cursor-pointer" onclick="openImageFullscreen('${img.data}')">`
+            const imageGallery = project.images.map((img, index) => 
+                `<div class="rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow cursor-pointer" onclick="openImageFullscreen('${img.data}')">
+                    <img src="${img.data}" alt="${project.name} ${index + 1}" class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+                </div>`
             ).join('');
             
             modal.innerHTML = `
-                <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-6">
-                            <div>
-                                <h2 class="text-2xl font-bold text-gray-900">${name}</h2>
-                                <p class="text-blue-600 font-semibold">${category.charAt(0).toUpperCase() + category.slice(1)} Project</p>
-                            </div>
-                            <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <h3 class="text-lg font-semibold mb-2">Description</h3>
-                            <p class="text-gray-600">${description}</p>
-                        </div>
-                        
+                <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+                    <div class="sticky top-0 bg-white border-b flex justify-between items-center p-6">
                         <div>
-                            <h3 class="text-lg font-semibold mb-4">Project Images (${images.length})</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <h2 class="text-3xl font-bold text-gray-900">${project.name}</h2>
+                            <p class="text-blue-600 font-semibold mt-1">${project.category.charAt(0).toUpperCase() + project.category.slice(1)} Project</p>
+                        </div>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 text-3xl font-bold w-10 h-10 flex items-center justify-center">×</button>
+                    </div>
+                    
+                    <div class="p-6 space-y-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 text-gray-900">Project Description</h3>
+                            <p class="text-gray-700 leading-relaxed text-lg">${project.description}</p>
+                            <p class="text-sm text-gray-500 mt-4">Created: ${project.createdDate}</p>
+                        </div>
+                        
+                        <div class="border-t pt-6">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-900">Project Gallery (${project.images.length} ${project.images.length === 1 ? 'image' : 'images'})</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 ${imageGallery}
                             </div>
+                            <p class="text-sm text-gray-500 mt-4">💡 Click any image to view it in fullscreen</p>
                         </div>
                     </div>
                 </div>
@@ -815,7 +1011,7 @@
 
         // Show project message function
         function showProjectMessage(message, type) {
-            const form = document.getElementById('project-upload-form');
+            const projectsSection = document.getElementById('projects');
             const messageDiv = document.createElement('div');
             
             if (type === 'success') {
@@ -826,8 +1022,8 @@
             
             messageDiv.innerHTML = message;
             
-            // Insert message before the form
-            form.parentNode.insertBefore(messageDiv, form);
+            // Insert message at top of projects section
+            projectsSection.insertBefore(messageDiv, projectsSection.firstChild);
             
             // Remove message after 5 seconds
             setTimeout(() => {
